@@ -23,7 +23,7 @@ node-red-contrib-kafka-manager
 node-red-contrib-web-worldmap
 ```
 
-The Node-RED flow consists in four components: a Kafka consumer to recibe the flight information; a JSON function to parse the string recived; a debug funcion; a the worldmap to visualize the flights in worldmap.
+The Node-RED flow consists in four components: a Kafka consumer to recibe the flight information; a JSON function to parse the string received; a debug funcion; and the worldmap node to visualize the flights in worldmap.
 
 ![Node-red-flow](images/node-red-flow.png)
 
