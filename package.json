@@ -1,0 +1,15 @@
+{
+  "name": "demo_kafka_radar",
+  "version": "1.0.0",
+  "description": "Demo with Apache Kafka and FLightRadar24",
+  "main": "index.js",
+  "dependencies": {
+    "flightradar24-client": "0.3.0",
+    "kafka-node": "5.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cristian Martin",
+  "license": "ISC"
+}

@@ -1,0 +1,55 @@
+version: '3.7'
+
+services:
+    node-red:
+      image: nodered/node-red:latest
+      deploy:
+        replicas: 1
+        restart_policy:
+            condition: on-failure
+      ports:
+        - "1880:1880"
+
+    zookeeper:
+        image: zookeeper:3.5.4-beta
+        ports:
+          - 2181:2181
+        environment:
+          ZOO_MY_ID: 1
+          ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181
+ 
+    kafka:
+        image: ertis/kafka:2.12-2.2.1
+        ports:
+          - target: 9094
+            published: 9094
+            protocol: tcp
+        environment:
+          KAFKA_ADVERTISED_HOST_NAME: "hostname"
+          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+          KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+          KAFKA_ADVERTISED_LISTENERS: INSIDE://:9092,OUTSIDE://localhost:9094
+          KAFKA_LISTENERS: INSIDE://:9092,OUTSIDE://:9094
+          KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+          KAFKA_BROKER_ID: 1
+          KAFKA_ZOOKEEPER_CONNECTION_TIMEOUT_MS: 360000
+          KAFKA_LOG_RETENTION_BYTES: -1
+          KAFKA_LOG_RETENTION_DAYS: 2
+          KAFKA_HEAP_OPTS: "-Xmx900m -Xms512m"
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+
+    flightradar24_to_kafka:
+        image: ertis/flightradar24tokafka
+        deploy:
+            replicas: 1
+            restart_policy:
+                condition: on-failure
+        environment:
+            LAT : 36.7201600
+            LON : -4.4203400
+            KAFKA_TOPIC : 'ertisdemo'
+            BROKER_LIST : 'kafka:9092'
+            CONNECTION_TIMEOUT : 100000
+            RADIUS: 1
+            REFRESH_INTERVAL : 3000
