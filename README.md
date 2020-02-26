@@ -6,10 +6,15 @@ This project displays the flight routes within latitude and longitude from Fligh
 
 This project requires a Docker Swarm cluster to deploy the components. Plese visit the [official page](https://docs.docker.com/engine/swarm/) for more information. 
 
+In `docker-compose.yml` the Docker services needed for this project are defined:
+1. Apache Kafka
+2. Apache Zookeper
+3. Node-RED 
+4. Service (flightradar24_to_kafka) that obtains the flights and sends them through Apache Kafka to Node-RED. The source code is available in this repository: `index.js`.
 
-## 1. Deploy the stack in Docker Swarm
 The latitude, longitude, refresh time, radious and other parameters can be configured in the environment variables of the flightradar24_to_kafka service in the `docker-compose.yml` file.
 
+## 1. Deploy the stack in Docker Swarm
 Clone this repository in a manager of your Docker Swarm cluster and deploy the stack:
 ```
 docker stack deploy -c docker-compose.yml flightdemo
